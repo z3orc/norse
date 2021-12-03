@@ -81,7 +81,7 @@ function logBad {
 }
 
 function haltServer {
-    tmux send-keys -t valheim C-c
+    tmux send-keys -t valheim-$ID C-c
 }
 
 function killServer {
@@ -161,7 +161,7 @@ setup() {
 
     tput sc
 
-    RCONPASS=$(openssl rand -base64 14)
+    ID=$(openssl rand -base64 14)
     PORT=2456
 
     tput sc
@@ -172,6 +172,7 @@ setup() {
     echo NAME="${NAME// /}" >> $DIR/norse.config | xargs
     echo WORLD="${WORLD// /}" >> $DIR/norse.config | xargs
     echo PASS="${PASS// /}" >> $DIR/norse.config | xargs
+    echo ID="${ID// /}" >> $DIR/norse.config | xargs
     
     if [[ $PUBLIC == "y" || $PUBLIC == "Y" ]]; then
         echo PUBLIC="1" >> $DIR/norse.config | xargs
@@ -233,7 +234,7 @@ setup() {
     textclear
     
     STATUS=$(nc -z 127.0.0.1 2456 && echo "USE" || echo "FREE")
-    tmux has-session -t valheim 2>/dev/null
+    tmux has-session -t valheim-$ID 2>/dev/null
 
     if [[ $? = 0 ]]; then
         echo "[ $(tput setaf 2)SUCCESS$(tput sgr 0) ] Server integrity validated"
@@ -252,12 +253,12 @@ function start {
     if [[ $1 = "" ]]; then
         logNeutral "Starting server!"
 
-        bootServer valheim
+        bootServer valheim-$ID
 
         i=0
         while [ $i -lt 60 ];
         do
-            if isSessionRunning valheim && isServerRunning; then
+            if isSessionRunning valheim-$ID && isServerRunning; then
                 logGood "Server booted successfully"
                 setServerState online
                 exit 0
@@ -270,7 +271,7 @@ function start {
 
         logBad "Could not boot server."
         setServerState offline
-        killServer valheim
+        killServer valheim-$ID
     fi
 }
 
@@ -281,16 +282,16 @@ function stop {
 
     logNeutral "Stopping server."
 
-    haltServer valheim
+    haltServer valheim-$ID
 
     i=0
     while [[ $i -lt 60 ]];
     do
         if ! isServerRunning; then
             logGood "Server halted successfully"
-            killServer valheim
+            killServer valheim-$ID
             setServerState offline
-            if ! isSessionRunning valheim; then
+            if ! isSessionRunning valheim-$ID; then
                 break
             fi
         else
@@ -300,7 +301,7 @@ function stop {
         fi
     done
 
-    if isPortBinded 2456 || isServerRunning || isSessionRunning valheim; then
+    if isPortBinded 2456 || isServerRunning || isSessionRunning valheim-$ID; then
         logBad "Could not halt server."
         setServerState online
     fi
@@ -321,7 +322,7 @@ function backup {
             exit 0
     fi
 
-    if isSessionRunning valheim; then
+    if isSessionRunning valheim-$ID; then
         logNeutral "Starting backups process and saving world. This might cause server instability"
 
         logNeutral "Running rdiff-backup."
