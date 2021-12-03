@@ -161,7 +161,7 @@ setup() {
 
     tput sc
 
-    ID=$(openssl rand -base64 14)
+    ID=$RANDOM
     PORT=2456
 
     tput sc
