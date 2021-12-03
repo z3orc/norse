@@ -89,7 +89,7 @@ function killServer {
 }
 
 function bootServer {
-    tmux new -d -s $1 ./norse bootServerLoop
+    tmux new -d -s $1 ./norse.sh bootServerLoop
 }
 
 function bootServerLoop {
@@ -217,7 +217,7 @@ setup() {
 
     tput sc
 
-    ./norse start
+    ./norse.sh start
 
     sleep 15
 
@@ -337,13 +337,13 @@ function upgrade {
 
     logNeutral "Updating server"
 
-    ./norse stop
+    ./norse.sh stop
 
     $DIR/bin/steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType linux +force_install_dir $DIR/serverfiles/valheim_server +login anonymous +app_update 896660 +quit 2>/dev/null
 
     logGood "Update process complete."
 
-    ./norse start
+    ./norse.sh start
 
 }
 
