@@ -6,7 +6,7 @@ A Valheim-server management script for Linux. You cant start, stop, update and b
 
 ## Install
 1. Download the norse.sh script using:
-`DIR=$(pwd); rm norse; wget -O norse https://raw.githubusercontent.com/z3orc/norse/main/norse.sh; chmod +x mcontrol; cd $DIR`
+`DIR=$(pwd); rm norse.sh; wget -O norse.sh https://raw.githubusercontent.com/z3orc/norse/main/norse.sh; chmod +x norse.sh; cd $DIR`
 
 
 2. You will need to download the dependencies shown above using a package manager or other tools.
