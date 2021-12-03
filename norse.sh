@@ -139,9 +139,17 @@ setup() {
     rm $DIR/norse.config 2>/dev/null
     touch $DIR/norse.config
 
-    mkdir $DIR/serverfiles 2>/dev/null && mkdir $DIR/backups 2>/dev/null && mkdir $DIR/bin 2>/dev/null && $DIR/serverfiles/valheim_server 2>/dev/null
+    mkdir $DIR/serverfiles 2>/dev/null
+    mkdir $DIR/backups 2>/dev/null
+    mkdir $DIR/bin 2>/dev/null
+    mkdir $DIR/serverfiles/valheim_server 2>/dev/null
+    mkdir $DIR/assets 2>/dev/null
+
+    cd $DIR/serverfiles/assets && curl -L -o logo.txt "https://raw.githubusercontent.com/z3orc/norse/main/logo.txt" --progress-bar 2>/dev/null
     
-    cd serverfiles 2>/dev/null
+    cd $DIR/serverfiles 2>/dev/null
+
+    clear && cat $DIR/assets/logo.txt && echo -e "\n"
 
     IFS= read -r -p "Server name: " NAME
 :
@@ -173,6 +181,7 @@ setup() {
 
     textclear
 
+    clear && cat $DIR/assets/logo.txt && echo -e "\n"
 
     echo "            [Downloading dependencies]"
     echo "----------------------------------------------------"
