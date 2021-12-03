@@ -62,7 +62,7 @@ function setServerState {
     if [ $1 = "offline" ]; then
         touch $DIR/.offline 2>/dev/null
     elif [ $1 = "online" ]; then
-        rm $DIR/.offline 2>/dev/null
+        rm -rf $DIR/.offline 2>/dev/null
     else 
         echo "Unknown argument!"
     fi
@@ -101,7 +101,7 @@ function bootServerLoop {
     while [ $i -lt 4 ] 
     do
             echo "Server started"
-            rm $DIR/.offline
+            rm -rf $DIR/.offline
                 export templdpath=$LD_LIBRARY_PATH
                 export LD_LIBRARY_PATH=./linux64:$LD_LIBRARY_PATH
                 export SteamAppId=892970
@@ -136,7 +136,7 @@ setup() {
 
     clear
 
-    rm $DIR/norse.config 2>/dev/null
+    rm -rf $DIR/norse.config 2>/dev/null
     touch $DIR/norse.config
 
     mkdir $DIR/serverfiles 2>/dev/null
@@ -152,7 +152,7 @@ setup() {
     clear && cat $DIR/assets/logo.txt && echo -e "\n"
 
     IFS= read -r -p "Server name: " NAME
-:
+    
     IFS= read -r -p "World name: " WORLD
 
     IFS= read -r -p "Password: " PASS
@@ -195,7 +195,7 @@ setup() {
 
     curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" --progress-bar | tar zxvf -
 
-    rm steamcmd_linux.tar.gz
+    rm -rf steamcmd_linux.tar.gz
 
     textclear
 
