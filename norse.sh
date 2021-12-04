@@ -357,6 +357,11 @@ function upgrade {
 
 }
 
+function console {
+    source norse.config
+    tmux a -t valheim-$ID
+}
+
 case "$1" in
         setup)
                 setup
@@ -376,6 +381,9 @@ case "$1" in
         upgrade)
                 upgrade "${2}"
                 ;;
+        console)
+                console
+                ;;
         *)
-                echo "Usage: $0 {start|resume|stop|upgrade|backup|setup}"
+                echo "Usage: ./norse.sh {start|stop|upgrade|backup|console|setup}"
 esac
