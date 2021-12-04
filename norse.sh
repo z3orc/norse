@@ -287,7 +287,7 @@ function stop {
     i=0
     while [[ $i -lt 60 ]];
     do
-        if ! isServerRunning; then
+        if ! isSessionRunning valheim-$ID; then
             logGood "Server halted successfully"
             killServer valheim-$ID
             setServerState offline
