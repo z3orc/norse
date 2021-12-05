@@ -326,7 +326,7 @@ function backup {
         logNeutral "Starting backups process and saving world. This might cause server instability"
 
         logNeutral "Running rdiff-backup."
-        nice -n 10 rdiff-backup --exclude $DIR/serverfiles/valheim_server $DIR/serverfiles $DIR/backups
+        nice -n 10 rdiff-backup ./serverfiles ./backups
         logGood "rdiff-backup complete."
 
         logNeutral "Removing old backups."
