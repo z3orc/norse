@@ -12,7 +12,7 @@ A Valheim-server management script for Linux. You cant start, stop, update and b
 2. You will need to download the dependencies shown above using a package manager or other tools.
 
 
-3. To start the setup-script just run `./norse setup` or `./norse.sh setup` and follow the instructions.
+3. To start the setup-script just run `./norse.sh setup` and follow the instructions.
 
 
 If the installation was a success, the server should start after the setup-script is finished.
