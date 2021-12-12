@@ -330,7 +330,7 @@ function backup {
         logGood "rdiff-backup complete."
 
         logNeutral "Removing old backups."
-        nice -n 10 rdiff-backup --force --remove-older-than 8W $DIR/backups
+        nice -n 10 rdiff-backup --force --remove-older-than 2W $DIR/backups
         logGood "Old backups removed."
 
         logGood "Backup process complete."
