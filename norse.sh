@@ -97,37 +97,26 @@ function bootServerLoop {
 
     cd $DIR/serverfiles/valheim_server || exit
 
-    # i=0
-    # while [ $i -lt 4 ] 
-    # do
-    #         echo "Server started"
-    #         rm -rf $DIR/.offline
-    #             export templdpath=$LD_LIBRARY_PATH
-    #             export LD_LIBRARY_PATH=./linux64:$LD_LIBRARY_PATH
-    #             export SteamAppId=892970
+    i=0
+    while [ $i -lt 4 ] 
+    do
+            echo "Server started"
+            rm -rf $DIR/.offline
+                export templdpath=$LD_LIBRARY_PATH
+                export LD_LIBRARY_PATH=./linux64:$LD_LIBRARY_PATH
+                export SteamAppId=892970
 
-    #             # Tip: Make a local copy of this script to avoid it being overwritten by steam.
-    #             # NOTE: Minimum password length is 5 characters & Password cant be in the server name.
-    #             # NOTE: You need to make sure the ports 2456-2458 is being forwarded to your server through your local router & firewal>
-    #             ./valheim_server.x86_64 -name "$NAME" -port 2456 -world "$WORLD" -password "$PASS" -public "$PUBLIC" -savedir "$DIR/serverfiles"
+                # Tip: Make a local copy of this script to avoid it being overwritten by steam.
+                # NOTE: Minimum password length is 5 characters & Password cant be in the server name.
+                # NOTE: You need to make sure the ports 2456-2458 is being forwarded to your server through your local router & firewal>
+                ./valheim_server.x86_64 -name "$NAME" -port 2456 -world "$WORLD" -password "$PASS" -public "$PUBLIC" -savedir "$DIR/serverfiles"
 
-    #             export LD_LIBRARY_PATH=$templdpath
-    #         touch $DIR/.offline
-    #         echo "Server stopped"
-    #         sleep 120;
-    #         i=$[$i+1]
-    # done
-
-    export templdpath=$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=./linux64:$LD_LIBRARY_PATH
-    export SteamAppId=892970
-
-    # Tip: Make a local copy of this script to avoid it being overwritten by steam.
-    # NOTE: Minimum password length is 5 characters & Password cant be in the server name.
-    # NOTE: You need to make sure the ports 2456-2458 is being forwarded to your server through your local router & firewal>
-    ./valheim_server.x86_64 -name "$NAME" -port 2456 -world "$WORLD" -password "$PASS" -public "$PUBLIC" -savedir "$DIR/serverfiles"
-
-    export LD_LIBRARY_PATH=$templdpath
+                export LD_LIBRARY_PATH=$templdpath
+            touch $DIR/.offline
+            echo "Server stopped"
+            sleep 120;
+            i=$[$i+1]
+    done
 }
 
 # Functions for controlling the server
@@ -271,7 +260,7 @@ function start {
         i=0
         while [ $i -lt 60 ];
         do
-            if isSessionRunning valheim-$ID; then
+            if isSessionRunning valheim-$ID && isServerRunning; then
                 logGood "Server booted successfully"
                 setServerState online
                 exit 0
@@ -300,10 +289,9 @@ function stop {
     i=0
     while [[ $i -lt 60 ]];
     do
-        if ! isSessionRunning valheim-$ID; then
+        if ! isServerRunning; then
             logGood "Server halted successfully"
             killServer valheim-$ID
-            setServerState offline
             if ! isSessionRunning valheim-$ID; then
                 break
             fi
