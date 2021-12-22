@@ -312,17 +312,7 @@ function backup {
 
     source norse.config
 
-    if [[ $1 = "list" ]]; then
-            nice -n 10 rdiff-backup --list-increments $DIR/backups
-            exit 0
-    fi
-
-    if [[ $1 = "revert" ]]; then
-            rdiff-backup -r now $DIR/backups $DIR/serverfiles
-            exit 0
-    fi
-
-    if isSessionRunning valheim-$ID; then
+    function save {
         logNeutral "Starting backups process and saving world. This might cause server instability"
 
         logNeutral "Running rdiff-backup."
@@ -334,9 +324,20 @@ function backup {
         logGood "Old backups removed."
 
         logGood "Backup process complete."
+    }
+
+    if [[ $1 = "list" ]]; then
+            nice -n 10 rdiff-backup --list-increments $DIR/backups
+    fi
+
+    if [[ $1 = "revert" ]]; then
+            rdiff-backup -r now $DIR/backups $DIR/serverfiles
+    fi
+
+    if isSessionRunning valheim-$ID; then
+        stop && save && start
     else
-        logBad "Cannot backup while server is not running"
-        exit 1
+        save && start
     fi
 }
 
@@ -347,13 +348,13 @@ function upgrade {
 
     logNeutral "Updating server"
 
-    ./norse.sh stop
+    stop
 
     $DIR/bin/steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType linux +force_install_dir $DIR/serverfiles/valheim_server +login anonymous +app_update 896660 +quit 2>/dev/null
 
     logGood "Update process complete."
 
-    ./norse.sh start
+    start
 
 }
 
