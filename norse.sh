@@ -266,10 +266,12 @@ function start {
 
         bootServer valheim-$ID
 
+        sleep 5
+
         i=0
         while [ $i -lt 60 ];
         do
-            if isSessionRunning valheim-$ID && isServerRunning; then
+            if isSessionRunning valheim-$ID; then
                 logGood "Server booted successfully"
                 setServerState online
                 exit 0
