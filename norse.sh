@@ -327,18 +327,17 @@ function backup {
         logGood "Backup process complete."
     }
 
+
     if [[ $1 = "list" ]]; then
-            nice -n 10 rdiff-backup --list-increments $DIR/backups
-    fi
-
-    if [[ $1 = "revert" ]]; then
-            rdiff-backup -r now $DIR/backups $DIR/serverfiles
-    fi
-
-    if isSessionRunning valheim-$ID; then
-        stop && save && start
+        nice -n 10 rdiff-backup --list-increments $DIR/backups
+    elif [[ $1 = "revert" ]]; then
+        rdiff-backup -r now $DIR/backups $DIR/serverfiles
     else
-        save && start
+        if isSessionRunning valheim-$ID; then
+        stop && save && start
+        else
+            save && start
+        fi
     fi
 }
 
